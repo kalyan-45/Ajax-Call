@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    UserName: <input type="text" id="txtFName"><br>
+    Password: <input type="text" id="txtLName"><br>
+    <input type="button" value="Login" onclick="Login()"><br>
+    <div style="color: red;" id="myDiv"></div>
+
+    <script>
+       
+        function Login()
+        {
+
+            var userName = document.getElementById("txtFName").value;
+            var password = document.getElementById("txtLName").value;
+            var refToMyDiv = document.getElementById("myDiv");
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = ()=>{
+                if(xhr.status == 200 && xhr.readyState == 4)
+                {
+                    var dataInJSONFormat = JSON.parse(xhr.responseText);
+                    var usersArray =  dataInJSONFormat.data;
+                    var isUserValid = false;
+
+                     for(i=0; i< usersArray.length; i++)
+                     {
+                         var user = usersArray[i];
+
+                         if(user.first_name == userName && 
+                            user.last_name == password)
+                            {
+                                isUserValid = true;
+                                refToMyDiv.innerHTML = "";
+
+                                var encodedUserName = btoa(userName);
+                                localStorage.setItem("uname",encodedUserName);
+                                window.location.href = "profile.html";
+                            }
+                     }
+                     if(isUserValid==false)
+                     {
+                        refToMyDiv.innerHTML = "UserName / Password is not valid";
+                     }
+                }
+            }
+
+           xhr.open("GET", "https://reqres.in/api/users")
+           xhr.send();
+
+        }
+
+    </script>
+</body>
+</html>

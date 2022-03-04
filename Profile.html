@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="userNameText"></h1> 
+    <a onclick="LogOut()">Log Out</a>
+    <script>
+       var userEncoded =   localStorage.getItem("uname");
+       if(userEncoded == null || userEncoded == undefined )
+       {
+         window.location.href = "LoginValidiation.html";
+       }
+       else
+       {
+         var userName = atob(userEncoded);
+         var refToUserNameText = document.getElementById("userNameText");
+         refToUserNameText.innerText = "Welcome " + userName;
+
+       }
+
+       function LogOut()
+       {
+        localStorage.removeItem("uname");
+        window.location.href = "LoginValidiation.html";
+       }
+    </script>
+</body>
+</html>
